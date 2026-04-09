@@ -19,8 +19,13 @@ st.set_page_config(
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from config import POSTS_DIR, BASE_DIR, POSTING_TIMES, PROFILES
 from state_manager import StateManager
+from intelligence import IntelligenceScanner
+from researcher import ContentResearcher
+from viral_frameworks import VIRAL_FRAMEWORKS
 
 sm = StateManager()
+scanner = IntelligenceScanner()
+researcher = ContentResearcher()
 
 # ═══════════════════════════════════════════════════════════════
 #  SESSION STATE INITIALIZATION (Fixes Button Lag)
@@ -142,18 +147,45 @@ st.markdown("""
         box-shadow: 0 0 15px currentColor;
     }
 
-    /* Hide default streamlit elements */
-    #MainMenu, footer {visibility: hidden;}
-    header { visibility: hidden !important; height: 0; }
-    .block-container { padding-top: 0rem; }
-    
-    /* CUSTOM CHART STYLING */
-    [data-testid="stAreaChart"] {
-        border-radius: 20px;
-        border: 1px solid rgba(255, 215, 0, 0.1);
-        padding: 15px;
-        background: rgba(0,0,0,0.2);
+    /* HIDE STREAMLIT JUNK */
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
+
+    /* === GREETING OVERLAY (GENERAL HENDRICKS) === */
+    #greeting-overlay {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        background: #05070a;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        animation: fadeOut 1.5s ease 4s forwards;
+        pointer-events: none;
     }
+    .salute-container {
+        width: 400px;
+        text-align: center;
+    }
+    .salute-img {
+        width: 100%;
+        border-radius: 20px;
+        box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+        margin-bottom: 20px;
+    }
+    .greeting-text {
+        color: #FFD700;
+        font-weight: 900;
+        font-size: 2rem;
+        letter-spacing: 5px;
+        text-transform: uppercase;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes fadeOut { from {opacity: 1;} to {opacity: 0; visibility: hidden;} }
+    @keyframes pulse { 0% {opacity: 0.5;} 50% {opacity: 1;} 100% {opacity: 0.5;} }
 </style>
 """, unsafe_allow_html=True)
 
@@ -161,7 +193,7 @@ st.markdown("""
 #  HELPER FUNCTIONS
 # ═══════════════════════════════════════════════════════════════
 def load_performance_data():
-    times = pd.date_range(end=datetime.now(), periods=24, freq='H')
+    times = pd.date_range(end=datetime.now(), periods=24, freq='h')
     data = pd.DataFrame({
         'Time': times,
         'Beauty': np.random.randint(40, 95, 24),
@@ -187,16 +219,30 @@ with st.sidebar:
         st.checkbox(name, value=p_data.get("active", True), key=f"prof_{name}")
     
     st.markdown("---")
-    st.markdown("### ⚡ QUICK LAUNCH")
+    st.markdown("### 🏹 UNIVERSAL COMMAND")
+    target_niche = st.text_input("Enter Niche/Topic", placeholder="e.g. SaaS for Builders")
+    target_goal = st.selectbox("Campaign Goal", ["sales", "engagement", "ugc", "viral"])
+    target_strategy = st.selectbox("Viral Strategy", list(VIRAL_FRAMEWORKS.keys()))
     
-    if st.button("✨ BEAUTY TRANSFORMATION"):
-        trigger_action("Viral DNA: Beauty Transformation")
-        
-    if st.button("🧬 HORMONE INTEL"):
-        trigger_action("Viral DNA: Women's Health")
+    if st.button("🚀 DEPLOY UNIVERSAL AD"):
+        if target_niche:
+            trigger_action(f"Deploying {target_goal} ad for {target_niche}")
+            # Logic would go here to trigger the production
+        else:
+            st.warning("General, please specify the mission objective (Niche).")
 
     st.markdown("---")
-    if st.button("🔄 REFRESH COMMAND CENTER"):
+    st.markdown("### 🧠 INTELLIGENCE HUB")
+    target_url = st.text_input("Source URL to Scan", placeholder="https://site.com/article")
+    if st.button("📡 SCAN & EVOLVE"):
+        if target_url:
+            trigger_action(f"Scanning Intelligence: {target_url}")
+            # Logic for scanning
+        else:
+            st.warning("Intelligence URL required.")
+
+    st.markdown("---")
+    if st.button("🔄 REFRESH COMMAND"):
         st.rerun()
 
 # ═══════════════════════════════════════════════════════════════
@@ -207,6 +253,19 @@ st.markdown("""
     <h1>ROYALLE SOURCE</h1>
     <p>AI CONTENT EVOLUTION SYSTEM</p>
 </div>
+
+<!-- GREETING OVERLAY -->
+<div id="greeting-overlay">
+    <div class="salute-container">
+        <img src="app/static/soldier_salute.png" class="salute-img">
+        <div class="greeting-text">READY FOR COMMAND<br>GENERAL HENDRICKS</div>
+    </div>
+</div>
+
+<!-- AUDIO AUTOPLAY (HACK) -->
+<audio autoplay>
+    <source src="app/static/greeting.mp3" type="audio/mpeg">
+</audio>
 """, unsafe_allow_html=True)
 
 # ═══════════════════════════════════════════════════════════════

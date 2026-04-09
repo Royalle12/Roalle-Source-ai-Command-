@@ -44,92 +44,66 @@ BANNER = """
 """
 
 
-def run_single(niche="wellness"):
+def run_production(niche="wellness", goal="engagement", strategy="hormozi_unit", is_dry_run=True):
     """
-    Runs a single production cycle for testing.
-    Generates one Reel without posting.
+    Runs a production cycle using the General Hendricks Universal OS.
     """
-    print(f"\n🎬 Running single {niche} production (DRY RUN)...\n")
+    print(f"\n🚀 DEPLOYING MISSION: {niche.upper()} | GOAL: {goal.upper()}\n")
     sm = StateManager()
 
-    # 1. Research
-    print("[1/4] 📝 Generating script...")
-    sm.update_step("Generating Script", 10)
+    # 1. Research (Intelligence)
+    print(f"[1/4] 🧠 Running Viral Research ({strategy})...")
+    sm.update_step("Viral Research", 10)
     researcher = ContentResearcher()
-    script = researcher.generate_viral_script(niche)
+    script = researcher.generate_viral_script(niche, goal, strategy)
     if not script:
-        print("❌ Script generation failed. Check your GEMINI_API_KEY.")
+        print("❌ Intelligence failure.")
         return
-    print(f"  Title: {script.get('title', 'N/A')}")
-    print(f"  Hook: {script.get('hook', 'N/A')}")
+    print(f"  Hook: {script['hook']}")
 
-    # 2. Source footage
-    print("\n[2/4] 🎥 Sourcing vertical footage...")
-    sm.update_step("Sourcing Footage", 30)
+    # 2. Source (Production Support)
+    print("\n[2/4] 🎥 Sourcing cinematic footage...")
+    sm.update_step("Sourcing Assets", 35)
     sourcer = SourcingEngine()
-    keywords = script.get("mood_keywords", ["aesthetic cinematic"])
-    query = random.choice(keywords)
-    print(f"  Search query: {query}")
-    video_path = sourcer.fetch_vertical_video(query)
+    video_path = sourcer.fetch_vertical_video(script.get("mood_keywords", ["cinematic"]), niche)
     if not video_path:
-        print("❌ Video sourcing failed. Check your PEXELS_API_KEY.")
+        print("❌ Sourcing failed.")
         return
-    print(f"  Saved to: {video_path}")
 
-    # 3. Voice narration
+    # 3. Voice (Execution)
     print("\n[3/4] 🎙️ Generating narration...")
-    sm.update_step("Generating Voice", 55)
+    sm.update_step("Voice Synthesis", 60)
     voicer = VoiceEngine()
-    narration = f"{script['hook']} {script['script_body']} {script['cta']}"
-    audio_path = voicer.generate_narration(narration, f"test_{niche}_{int(time.time())}")
-    if not audio_path:
-        print("❌ Voice generation failed.")
-        return
-    print(f"  Saved to: {audio_path}")
+    full_text = f"{script['hook']} {script['problem']} {script['insight']} {script['payoff']} {script['cta']}"
+    audio_path = voicer.generate_narration(full_text, f"{niche}_{int(time.time())}")
 
-    # 4. Produce video
-    print("\n[4/4] 🎬 Assembling Reel...")
-    sm.update_step("Assembling Video", 75)
+    # 4. Assembly (Mission Ready)
+    print("\n[4/4] 🎬 Assembling Premium Ad...")
+    sm.update_step("Video Assembly", 85)
     producer = VideoGenerator()
-    output_name = f"Royalle_{niche}_TEST_{int(time.time())}.mp4"
+    output_name = f"Hendricks_{niche}_{int(time.time())}.mp4"
     final_path = producer.create_reel(video_path, audio_path, script, output_name)
-    if not final_path:
-        print("❌ Video production failed.")
-        return
-
-    sm.update_step("Test Complete!", 100, latest_video=final_path)
-    print(f"\n{'='*50}")
-    print(f"✅ SUCCESS! Pilot Reel saved to:")
-    print(f"   {final_path}")
-    print(f"{'='*50}")
-    print(f"\nOpen the dashboard to preview it!")
-
-
-def run_scheduler():
-    """
-    Starts the full automated scheduler.
-    """
-    scheduler = SmartScheduler()
-    scheduler.run()
+    
+    if final_path:
+        print(f"\n✅ MISSION COMPLETE: {final_path}")
+        sm.update_step("Mission Successful", 100, latest_video=final_path)
 
 
 def main():
     print(BANNER)
 
-    parser = argparse.ArgumentParser(description="Royalle Source AI Social Agent")
-    parser.add_argument("--mode", choices=["test", "schedule", "wellness", "food"],
-                       default="schedule",
-                       help="Run mode: 'test' for dry run, 'schedule' for full automation")
+    parser = argparse.ArgumentParser(description="Royalle Source Universal Social Agent")
+    parser.add_argument("--niche", type=str, default="wellness", help="Campaign niche")
+    parser.add_argument("--goal", type=str, default="engagement", help="Campaign goal")
+    parser.add_argument("--strategy", type=str, default="hormozi_unit", help="Viral strategy")
+    parser.add_argument("--test", action="store_true", help="Run a test cycle")
     args = parser.parse_args()
 
-    if args.mode == "test":
-        run_single("wellness")
-    elif args.mode == "wellness":
-        run_single("wellness")
-    elif args.mode == "food":
-        run_single("food")
-    elif args.mode == "schedule":
-        run_scheduler()
+    if args.test:
+        run_production(args.niche, args.goal, args.strategy, is_dry_run=True)
+    else:
+        # Default to scheduler or specific production
+        run_production(args.niche, args.goal, args.strategy)
 
 
 if __name__ == "__main__":
