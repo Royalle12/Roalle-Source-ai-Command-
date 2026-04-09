@@ -161,40 +161,30 @@ st.markdown("""
     header {visibility: hidden;}
     footer {visibility: hidden;}
 
-    /* === GREETING OVERLAY (GENERAL HENDRICKS) === */
-    #greeting-overlay {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100vw; height: 100vh;
-        background: #05070a;
-        z-index: 9999;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        animation: fadeOut 1.5s ease 4s forwards;
-        pointer-events: none;
-    }
-    .salute-container {
-        width: 400px;
+    /* === INLINE GREETING (SAFE) === */
+    .inline-salute {
         text-align: center;
-    }
-    .salute-img {
-        width: 100%;
+        padding: 20px;
+        background: rgba(15, 20, 30, 0.8);
+        border: 1px solid rgba(255, 215, 0, 0.3);
         border-radius: 20px;
-        box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
         margin-bottom: 20px;
+    }
+    .inline-salute img {
+        width: 150px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
     }
     .greeting-text {
         color: #FFD700;
         font-weight: 900;
-        font-size: 2rem;
-        letter-spacing: 5px;
+        font-size: 1.5rem;
+        letter-spacing: 3px;
+        margin-top: 10px;
         text-transform: uppercase;
         animation: pulse 2s infinite;
     }
 
-    @keyframes fadeOut { from {opacity: 1;} to {opacity: 0; visibility: hidden;} }
     @keyframes pulse { 0% {opacity: 0.5;} 50% {opacity: 1;} 100% {opacity: 0.5;} }
 </style>
 """, unsafe_allow_html=True)
@@ -292,12 +282,10 @@ st.markdown("""
     <p>AI CONTENT EVOLUTION SYSTEM</p>
 </div>
 
-<!-- GREETING OVERLAY -->
-<div id="greeting-overlay">
-    <div class="salute-container">
-        <img src="app/static/soldier_salute.png" class="salute-img">
-        <div class="greeting-text">READY FOR COMMAND<br>GENERAL HENDRICKS</div>
-    </div>
+<!-- INLINE GREETING -->
+<div class="inline-salute">
+    <img src="app/static/soldier_salute.png" alt="Salute">
+    <div class="greeting-text">READY FOR COMMAND, GENERAL HENDRICKS</div>
 </div>
 
 <!-- AUDIO AUTOPLAY (HACK) -->
