@@ -1,0 +1,18 @@
+{
+  "Royalle Wellness": {
+    "ig_id": "YOUR_IG_ID_1",
+    "fb_id": "YOUR_FB_ID_1",
+    "meta_token": "YOUR_TOKEN_1",
+    "youtube_secret": "client_secret_well.json",
+    "niche": "wellness",
+    "active": true
+  },
+  "Royalle Foodie": {
+    "ig_id": "YOUR_IG_ID_2",
+    "fb_id": "YOUR_FB_ID_2",
+    "meta_token": "YOUR_TOKEN_2",
+    "youtube_secret": "client_secret_food.json",
+    "niche": "food",
+    "active": false
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Royalle Source - Executive Command Center",
+  "short_name": "Royalle",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#FFD700",
+  "description": "Premium AI-powered social intelligence command center.",
+  "icons": [
+    {
+      "src": "static/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "static/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
