@@ -44,18 +44,24 @@ BANNER = """
 """
 
 
-def run_production(niche="wellness", goal="engagement", strategy="hormozi_unit", is_dry_run=True):
+def run_production(niche="wellness", goal="engagement", strategy="hormozi_unit", is_dry_run=True, override_script=None):
     """
     Runs a production cycle using the General Hendricks Universal OS.
+    If override_script is provided, it skips the intelligence phase.
     """
     print(f"\n🚀 DEPLOYING MISSION: {niche.upper()} | GOAL: {goal.upper()}\n")
     sm = StateManager()
 
     # 1. Research (Intelligence)
-    print(f"[1/4] 🧠 Running Viral Research ({strategy})...")
-    sm.update_step("Viral Research", 10)
-    researcher = ContentResearcher()
-    script = researcher.generate_viral_script(niche, goal, strategy)
+    if override_script:
+        print("[1/4] 🧠 Proceeding with approved intelligence...")
+        script = override_script
+    else:
+        print(f"[1/4] 🧠 Running Viral Research ({strategy})...")
+        sm.update_step("Viral Research", 10)
+        researcher = ContentResearcher()
+        script = researcher.generate_viral_script(niche, goal, strategy)
+        
     if not script:
         print("❌ Intelligence failure.")
         return

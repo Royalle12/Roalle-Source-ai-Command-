@@ -40,9 +40,14 @@ def load_profiles():
             "meta_token": META_ACCESS_TOKEN,
             "youtube_secret": YOUTUBE_CLIENT_SECRET_FILE,
             "niche": "wellness",
-            "active": True
+            "active": True,
+            "destination_url": ""
         }
     }
+
+def save_profiles(profiles_dict):
+    with open(PROFILES_FILE, "w") as f:
+        json.dump(profiles_dict, f, indent=4)
 
 PROFILES = load_profiles()
 
